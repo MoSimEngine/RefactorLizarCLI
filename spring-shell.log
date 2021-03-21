@@ -1,0 +1,13 @@
+1616314535310:help
+1616314539939:h
+1616314546624:find-feature-scattering-smell
+1616314555540:exit
+1616315435287:find-feature-scattering-smell --"" --""
+1616315440725:find-feature-scattering-smell --" " --" "
+1616315455781:find-feature-scattering-smell --code " " --language " "
+1616315464750:find-feature-scattering-smell --code "h" --language "h"
+1616315743288:exit
+1616315755099:find-feature-scattering-smell --code "h" --language "h"
+1616315770851:exit
+1616316320950:find-feature-scattering-smell --code "/Users/layornos/Downloads/mSimuLizar" --language "/Users/layornos/Projects/mPCM_build"
+1616316996771:find-feature-scattering-smell --code /Users/layornos/Downloads/mSimuLizar --language /Users/layornos/Projects/mPCM_build
