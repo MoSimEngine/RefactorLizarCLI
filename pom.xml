@@ -31,7 +31,7 @@
 	<dependency>
 	    <groupId>com.github.MoSimEngine</groupId>
 	    <artifactId>RefactorLizar</artifactId>
-	    <version>-9f096ca55a-1</version>
+	    <version>381a7ebca0</version>
 	</dependency>
 		<dependency>
 			<groupId>org.springframework.shell</groupId>
