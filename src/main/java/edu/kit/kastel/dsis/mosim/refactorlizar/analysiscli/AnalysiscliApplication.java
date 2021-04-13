@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AnalysiscliApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AnalysiscliApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(AnalysiscliApplication.class, args);
+    }
 }
