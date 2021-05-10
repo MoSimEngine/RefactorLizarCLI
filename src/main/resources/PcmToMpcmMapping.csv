@@ -14,10 +14,10 @@ org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity;mpcm.para
 org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity;mpcm.paradigm.repository.InterfaceProvidingEntity
 org.palladiosimulator.pcm.core.entity.ResourceProvidedRole;mpcm.domain.extensions.resourceinterfaces.resourcetype.ResourceProvidedRole
 org.palladiosimulator.pcm.repository.BasicComponent;mpcm.domain.softwarerepository.BasicComponent
-"org.palladiosimulator.pcm.repository.OperationProvidedRole;";mpcm.domain.softwarerepository.OperationProvidedRole
+org.palladiosimulator.pcm.repository.OperationProvidedRole;mpcm.domain.softwarerepository.OperationProvidedRole
 org.palladiosimulator.pcm.repository.OperationSignature;mpcm.domain.softwarerepository.OperationSignature
 org.palladiosimulator.pcm.repository.Parameter;mpcm.paradigm.repository.Parameter
-"org.palladiosimulator.pcm.repository.ProvidedRole;";mpcm.paradigm.repository.ProvidedRole
+org.palladiosimulator.pcm.repository.ProvidedRole;mpcm.paradigm.repository.ProvidedRole
 org.palladiosimulator.pcm.repository.RequiredRole;mpcm.paradigm.repository.RequiredRole
 org.palladiosimulator.pcm.repository.Signature;mpcm.paradigm.repository.Signature
 org.palladiosimulator.pcm.repository.util.RepositorySwitch;mpcm.domain.repository.util.RepositorySwitch
@@ -47,7 +47,7 @@ org.palladiosimulator.pcm.seff.SeffPackage;mpcm.paradigm.behaviour.seff.SeffPack
 org.palladiosimulator.pcm.seff.SetVariableAction;mpcm.domain.behaviourseff.SetVariableAction
 org.palladiosimulator.pcm.seff.util.SeffSwitch;mpcm.paradigm.seff.util.SeffSwitch
 org.palladiosimulator.pcm.usagemodel.AbstractUserAction;mpcm.paradigm.behaviour.usage.AbstractUserAction
-"org.palladiosimulator.pcm.usagemodel.Branch;";"mpcm.paradigm.behaviour.usage.Branch;"
+org.palladiosimulator.pcm.usagemodel.Branch;mpcm.paradigm.behaviour.usage.Branch
 org.palladiosimulator.pcm.usagemodel.BranchTransition;mpcm.paradigm.behaviour.usage.BranchTransition
 org.palladiosimulator.pcm.usagemodel.Delay;mpcm.paradigm.behaviour.usage.Delay
 org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;mpcm.domain.softwareusage.EntryLevelSystemCall
