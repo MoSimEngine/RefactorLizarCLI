@@ -1,8 +1,6 @@
 org.palladiosimulator.pcm.core.PCMRandomVariable;mpcm.paradigm.variables.PCMRandomVariable
 org.palladiosimulator.pcm.core.composition.AssemblyConnector;mpcm.domain.softwarecomposition.AssemblyConnector
 org.palladiosimulator.pcm.core.composition.AssemblyContext;mpcm.paradigm.composition.AssemblyContext
-;
-;
 org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector;mpcm.domain.extension.infrastructure.composition.AssemblyInfrastructureConnector
 org.palladiosimulator.pcm.core.composition.ComposedStructure;mpcm.paradigm.composition.ComposedStructure
 org.palladiosimulator.pcm.core.composition.CompositionFactory;mpcm.paradigm.composition.CompositionFactory
