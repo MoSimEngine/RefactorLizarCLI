@@ -5,8 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.SearchLevels;
+import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.Report;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.dependencycycle.DependencyCycleAnalyzer;
+import edu.kit.kastel.sdq.case4lang.refactorlizar.commons.Settings;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.LanguageParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.SimulatorParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.ModularLanguage;
@@ -17,49 +18,36 @@ import edu.kit.kastel.sdq.case4lang.refactorlizar.model.SimulatorModel;
 @ShellCommandGroup("bad-smell-analysis")
 public class DependencyCycleCommand {
 
-    private static final String ERROR_MESSAGE = "Cannot Analyze language path: %s code path: %s";
     private static final String STARTING_DEPENDENCY_CYCLE_ANALYSIS = "Starting dependency cycle Analysis";
     private static final Logger logger = LogManager.getLogger(DependencyCycleAnalyzer.class);
 
     @ShellMethod("Find occurrences of the language blobs smell on type level")
     public void findDependencyCycleSmellType(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
-        DependencyCycleAnalyzer dca = createDependencyCycleAnalyzer(language, code);
-        if (dca.supportsFullAnalysis()) {
-            logger.info(dca.fullAnalysis(SearchLevels.TYPE));
-        } else {
-            logger.error(ERROR_MESSAGE, language, code);
-        }
+        logger.info("{}", () -> createReport(language, code, "type"));
     }
 
     @ShellMethod("Find occurrences of the language blobs smell on package level")
     public void findDependencyCycleSmellPackage(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
-        DependencyCycleAnalyzer dca = createDependencyCycleAnalyzer(language, code);
-        logger.info(dca.getDescription());
-        if (dca.supportsFullAnalysis()) {
-            logger.info(dca.fullAnalysis(SearchLevels.PACKAGE));
-        } else {
-            logger.error(ERROR_MESSAGE, language, code);
+        logger.info("{}", () -> createReport(language, code, "package"));
 
-        }
     }
     @ShellMethod("Find occurrences of the language blobs smell on component level")
     public void findDependencyCycleSmellComponent(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
-        DependencyCycleAnalyzer dca = createDependencyCycleAnalyzer(language, code);
-        logger.info(dca.getDescription());
-        if (dca.supportsFullAnalysis()) {
-            logger.info(dca.fullAnalysis(SearchLevels.COMPONENT));
-        } else {
-            logger.error(ERROR_MESSAGE, language, code);
-        }
+        logger.info("{}", () -> createReport(language, code, "component"));
+
     }
-    private DependencyCycleAnalyzer createDependencyCycleAnalyzer(String language, String code) {
-        SimulatorModel model = new SimulatorModel(new SimulatorParser().parseLanguage(code));
-        ModularLanguage lang = new ModularLanguage(new LanguageParser().parseLanguage(language));
+
+    private Report createReport(String language, String code, String level) {
+        SimulatorModel model = new SimulatorModel(SimulatorParser.parseSimulator(code));
+        ModularLanguage lang = new ModularLanguage(LanguageParser.parseLanguage(language));
+
         DependencyCycleAnalyzer dca = new DependencyCycleAnalyzer();
-        dca.init(lang, model);
-        return dca;
+        logger.info(dca.getDescription());
+        Settings settings  = dca.getSettings();
+        settings.setValue("level", level);
+        return dca.analyze(lang, model, settings);
     }
 }
