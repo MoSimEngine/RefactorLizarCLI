@@ -1,5 +1,6 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
+import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.shell.standard.ShellCommandGroup;
@@ -19,21 +20,21 @@ import edu.kit.kastel.sdq.case4lang.refactorlizar.model.SimulatorModel;
 public class DependencyCycleCommand {
 
     private static final String STARTING_DEPENDENCY_CYCLE_ANALYSIS = "Starting dependency cycle Analysis";
-    private static final Logger logger = LogManager.getLogger(DependencyCycleAnalyzer.class);
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    @ShellMethod("Find occurrences of the language blobs smell on type level")
+    @ShellMethod("Find occurrences of the dependency cycle smell on type level")
     public void findDependencyCycleSmellType(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "type"));
     }
 
-    @ShellMethod("Find occurrences of the language blobs smell on package level")
+    @ShellMethod("Find occurrences of the dependency cycle smell on package level")
     public void findDependencyCycleSmellPackage(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "package"));
 
     }
-    @ShellMethod("Find occurrences of the language blobs smell on component level")
+    @ShellMethod("Find occurrences of the dependency cycle smell on component level")
     public void findDependencyCycleSmellComponent(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "component"));
