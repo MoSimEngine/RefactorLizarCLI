@@ -1,5 +1,6 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
+import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.shell.standard.ShellCommandGroup;
@@ -19,7 +20,7 @@ import edu.kit.kastel.sdq.case4lang.refactorlizar.model.SimulatorModel;
 public class FeatureScatterCommand {
 
     private static final String STARTING_FEATURE_SCATTERING_ANALYSIS = "Starting Feature Scattering Analysis";
-    private static final Logger logger = LogManager.getLogger(FeatureScatterAnalyzer.class);
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @ShellMethod("Find occurrences of the feature scattering smell on type level")
     public void findFeatureScatteringSmellType(String language, String code) {

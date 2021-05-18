@@ -1,11 +1,14 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
-import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.Report;
+import java.lang.invoke.MethodHandles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
+import org.springframework.util.StringUtils;
+import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.Report;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.SearchLevels;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.languageblob.LanguageBlobAnalyzer;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.commons.Settings;
@@ -13,8 +16,6 @@ import edu.kit.kastel.sdq.case4lang.refactorlizar.core.LanguageParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.SimulatorParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.ModularLanguage;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.SimulatorModel;
-import org.springframework.shell.standard.ShellOption;
-import org.springframework.util.StringUtils;
 
 
 @ShellComponent
@@ -22,7 +23,7 @@ import org.springframework.util.StringUtils;
 public class LanguageBlobCommand {
 
     private static final String STARTING_LANGUAGE_BLOB_ANALYSIS = "Starting language blobs Analysis";
-    private static final Logger logger = LogManager.getLogger(LanguageBlobAnalyzer.class);
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     private static final String PACKAGE_HEADER = "Simulator Package:";
     private static final String TYPE_HEADER = "Simulator Type:";
     private static final String COMPONENT_HEADER = "Simulator Component:";
