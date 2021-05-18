@@ -20,19 +20,19 @@ public class ImproperLayerCommand {
   private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
   @ShellMethod("Find occurrences of the improper simulator layering smells on type level.")
-  public void findDependencyDirectionSmellType(String language, String code) {
+  public void findDependencyLayerSmellType(String language, String code) {
       logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
       logger.info("{}", () -> createReport(language, code, "type"));
   }
 
   @ShellMethod("Find occurrences of the improper simulator layering smells on package level." )
-  public void findDependencyDirectionSmellPackage(String language, String code) {
+  public void findDependencyLayerSmellPackage(String language, String code) {
       logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
       logger.info("{}", () -> createReport(language, code, "package"));
 
   }
   @ShellMethod("Find occurrences of the improper simulator layering smells on component level.")
-  public void findDependencyDirectionSmellComponent(String language, String code) {
+  public void findDependencyLayerSmellComponent(String language, String code) {
       logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
       logger.info("{}", () -> createReport(language, code, "component"));
 
