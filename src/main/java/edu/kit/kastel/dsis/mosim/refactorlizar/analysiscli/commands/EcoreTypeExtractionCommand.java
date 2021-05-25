@@ -1,6 +1,7 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
-import java.io.File;
+import static org.apache.logging.log4j.util.Strings.LINE_SEPARATOR;
+
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.*;
@@ -11,7 +12,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import static org.apache.logging.log4j.util.Strings.LINE_SEPARATOR;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -26,7 +26,8 @@ import org.xml.sax.SAXException;
 public class EcoreTypeExtractionCommand {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     private final String ECORE_FILE_ENDING = "ecore";
-    private final PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**."+ECORE_FILE_ENDING);
+    private final PathMatcher matcher =
+            FileSystems.getDefault().getPathMatcher("glob:**." + ECORE_FILE_ENDING);
     private final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
     @ShellMethod("Metamodels Type Extraction")
@@ -45,11 +46,9 @@ public class EcoreTypeExtractionCommand {
     }
 
     private void printMetamodelTypes(Map<String, List<String>> metamodels) {
-        StringJoiner joiner = new StringJoiner(LINE_SEPARATOR,LINE_SEPARATOR,LINE_SEPARATOR);
-        for(var entry : metamodels.entrySet()) {
-            joiner.add("Metamodel:")
-                    .add(entry.getKey())
-                    .add("Types:");
+        StringJoiner joiner = new StringJoiner(LINE_SEPARATOR, LINE_SEPARATOR, LINE_SEPARATOR);
+        for (var entry : metamodels.entrySet()) {
+            joiner.add("Metamodel:").add(entry.getKey()).add("Types:");
             entry.getValue().forEach(joiner::add);
             joiner.add(LINE_SEPARATOR);
         }
