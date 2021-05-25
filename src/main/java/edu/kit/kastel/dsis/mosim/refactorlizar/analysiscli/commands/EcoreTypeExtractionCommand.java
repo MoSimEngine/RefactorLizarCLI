@@ -49,20 +49,19 @@ public class EcoreTypeExtractionCommand {
     }
 
     private void printMetamodelTypes(Map<String, List<String>> metamodels) {
+        StringBuilder sb = new StringBuilder();
         metamodels.forEach(
                 (key, value) -> {
-                    StringBuilder sb = new StringBuilder();
                     sb.append(Strings.LINE_SEPARATOR)
                             .append("Metamodel:")
                             .append(Strings.LINE_SEPARATOR)
                             .append(key)
                             .append(Strings.LINE_SEPARATOR)
-                            .append(Strings.LINE_SEPARATOR)
                             .append("Types:")
                             .append(Strings.LINE_SEPARATOR);
                     value.forEach(type -> sb.append(type).append(Strings.LINE_SEPARATOR));
-                    logger.info(sb);
                 });
+        logger.info(sb);
     }
 
     private void readMetamodels(Map<String, List<String>> metamodels, Path path) {
