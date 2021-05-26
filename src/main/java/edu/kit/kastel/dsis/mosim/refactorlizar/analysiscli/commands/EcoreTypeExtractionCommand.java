@@ -40,17 +40,13 @@ public class EcoreTypeExtractionCommand {
 
     @ShellMethod("Metamodels Type Extraction")
     public void showTypesInMetamodels(String rootPath) {
-        Map<String, List<String>> metamodels = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(rootPath))) {
             paths.filter(matcher::matches)
-                    .forEach(
-                            path -> {
-                                readMetamodels(metamodels, path);
-                            });
+                    .map(this::readMetamodels)
+                    .forEach(this::printMetamodelTypes);
         } catch (IOException e) {
             logger.error(e);
         }
-        printMetamodelTypes(metamodels);
     }
 
     private void printMetamodelTypes(Map<String, List<String>> metamodels) {
@@ -58,12 +54,12 @@ public class EcoreTypeExtractionCommand {
         for (var entry : metamodels.entrySet()) {
             joiner.add("Metamodel:").add(entry.getKey()).add("Types:");
             entry.getValue().forEach(joiner::add);
-            joiner.add(LINE_SEPARATOR);
         }
         logger.info(joiner);
     }
 
-    private void readMetamodels(Map<String, List<String>> metamodels, Path path) {
+    private Map<String, List<String>> readMetamodels(Path path) {
+        Map<String, List<String>> metamodels = new HashMap<>();
         metamodels.put(path.toString(), new ArrayList<>());
         try {
             DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
@@ -80,5 +76,6 @@ public class EcoreTypeExtractionCommand {
         } catch (ParserConfigurationException | SAXException | IOException e) {
             logger.error(e);
         }
+        return metamodels;
     }
 }
