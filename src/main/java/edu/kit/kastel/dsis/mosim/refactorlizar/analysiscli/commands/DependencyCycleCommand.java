@@ -41,8 +41,8 @@ public class DependencyCycleCommand {
     }
 
     private Report createReport(String language, String code, String level) {
-        SimulatorModel model = new SimulatorModel(SimulatorParser.parseSimulator(code));
-        ModularLanguage lang = new ModularLanguage(LanguageParser.parseLanguage(language));
+        SimulatorModel model = SimulatorParser.parseSimulator(code);
+        ModularLanguage lang = LanguageParser.parseLanguage(language);
 
         DependencyCycleAnalyzer dca = new DependencyCycleAnalyzer();
         logger.info(dca.getDescription());
