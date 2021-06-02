@@ -33,7 +33,7 @@ dependencies {
 }
 
 group = 'edu.kit.kastel.dsis.mosim.refactorlizar'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 description = 'analysiscli'
 sourceCompatibility = '1.11'
 

@@ -22,20 +22,36 @@ public class DependencyCycleCommand {
             "Starting dependency cycle Analysis";
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    @ShellMethod("Find occurrences of the dependency cycle smell on type level")
-    public void findDependencyCycleSmellType(String language, String code) {
+    @ShellMethod(
+            "Find occurrences of the dependency cycle smell on type level. Available levels are type, component and package")
+    public void findDependencyCycleSmell(String language, String code, String level) {
+        switch (level) {
+            case "type":
+                findDependencyCycleSmellType(language, code);
+                break;
+            case "package":
+                findDependencyCycleSmellPackage(language, code);
+                break;
+            case "component":
+                findDependencyCycleSmellComponent(language, code);
+                break;
+            default:
+                logger.atError()
+                        .log("Level {} not found. Available are type,component and package", level);
+        }
+    }
+
+    private void findDependencyCycleSmellType(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "type"));
     }
 
-    @ShellMethod("Find occurrences of the dependency cycle smell on package level")
-    public void findDependencyCycleSmellPackage(String language, String code) {
+    private void findDependencyCycleSmellPackage(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "package"));
     }
 
-    @ShellMethod("Find occurrences of the dependency cycle smell on component level")
-    public void findDependencyCycleSmellComponent(String language, String code) {
+    private void findDependencyCycleSmellComponent(String language, String code) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "component"));
     }
