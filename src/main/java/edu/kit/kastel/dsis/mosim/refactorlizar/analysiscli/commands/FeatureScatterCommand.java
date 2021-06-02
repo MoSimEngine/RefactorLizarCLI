@@ -41,8 +41,8 @@ public class FeatureScatterCommand {
     }
 
     private Report createReport(String language, String code, String level) {
-        SimulatorModel model = new SimulatorModel(SimulatorParser.parseSimulator(code));
-        ModularLanguage lang = new ModularLanguage(LanguageParser.parseLanguage(language));
+        SimulatorModel model = SimulatorParser.parseSimulator(code);
+        ModularLanguage lang = LanguageParser.parseLanguage(language);
 
         FeatureScatterAnalyzer fca = new FeatureScatterAnalyzer();
         logger.info(fca.getDescription());

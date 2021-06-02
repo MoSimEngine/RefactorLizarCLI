@@ -43,8 +43,8 @@ public class DependencyDirectionCommand {
     }
 
     private Report createReport(String language, String code, String level, String layer) {
-        SimulatorModel model = new SimulatorModel(SimulatorParser.parseSimulator(code));
-        ModularLanguage lang = new ModularLanguage(LanguageParser.parseLanguage(language));
+        SimulatorModel model = SimulatorParser.parseSimulator(code);
+        ModularLanguage lang = LanguageParser.parseLanguage(language);
 
         DependencyDirectionAnalyzer dda = new DependencyDirectionAnalyzer();
         logger.info(dda.getDescription());
