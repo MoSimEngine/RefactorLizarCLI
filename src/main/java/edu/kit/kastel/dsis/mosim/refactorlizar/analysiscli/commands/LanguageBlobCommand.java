@@ -29,7 +29,7 @@ public class LanguageBlobCommand {
     private static final String COMPONENT_HEADER = "Simulator Component:";
 
     @ShellMethod(
-            "Find occurrences of the language blobs smell. Available levels are type, component and package")
+            "Find occurrences of the language blobs smell. Available analysis levels are type, component and package")
     public void findLanguageBlobSmell(
             String language,
             String code,
@@ -47,7 +47,9 @@ public class LanguageBlobCommand {
                 break;
             default:
                 logger.atError()
-                        .log("Level {} not found. Available are type,component and package", level);
+                        .log(
+                                "Level {} not found. Available analysis levels are type,component and package",
+                                level);
         }
     }
 

@@ -22,7 +22,7 @@ public class DependencyDirectionCommand {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @ShellMethod(
-            "Find occurrences of the dependency direction smell.Layers must be ordered from bottom to top and separated by ','. Available levels are type, component and package")
+            "Find occurrences of the dependency direction smell. Layers must be ordered from bottom to top and separated by ','. Available analysis levels are type, component and package")
     public void findDependencyDirectionSmell(
             String language, String code, String layer, String level) {
         switch (level) {

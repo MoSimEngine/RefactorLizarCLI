@@ -23,7 +23,7 @@ public class DependencyCycleCommand {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @ShellMethod(
-            "Find occurrences of the dependency cycle smell on type level. Available levels are type, component and package")
+            "Find occurrences of the dependency cycle smell on type level. Available analysis levels are type, component and package")
     public void findDependencyCycleSmell(String language, String code, String level) {
         switch (level) {
             case "type":
@@ -37,7 +37,9 @@ public class DependencyCycleCommand {
                 break;
             default:
                 logger.atError()
-                        .log("Level {} not found. Available are type,component and package", level);
+                        .log(
+                                "Level {} not found. Available analysis levels are type,component and package",
+                                level);
         }
     }
 
