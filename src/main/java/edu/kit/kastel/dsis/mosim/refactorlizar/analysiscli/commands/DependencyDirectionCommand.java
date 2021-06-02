@@ -22,22 +22,36 @@ public class DependencyDirectionCommand {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @ShellMethod(
-            "Find occurrences of the dependency direction smells on type level. Layers must be ordered from bottom to top and separated by ','")
-    public void findDependencyDirectionSmellType(String language, String code, String layer) {
+            "Find occurrences of the dependency direction smell. Layers must be ordered from bottom to top and separated by ','. Available analysis levels are type, component and package")
+    public void findDependencyDirectionSmell(
+            String language, String code, String layer, String level) {
+        switch (level) {
+            case "type":
+                findDependencyDirectionSmellType(language, code, layer);
+                break;
+            case "package":
+                findDependencyDirectionSmellPackage(language, code, layer);
+                break;
+            case "component":
+                findDependencyDirectionSmellComponent(language, code, layer);
+                break;
+            default:
+                logger.atError()
+                        .log("Level {} not found. Available are type,component and package", level);
+        }
+    }
+
+    private void findDependencyDirectionSmellType(String language, String code, String layer) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "type", layer));
     }
 
-    @ShellMethod(
-            "Find occurrences of the dependency direction smells on package level. Layers must be ordered from bottom to top and separated by ','")
-    public void findDependencyDirectionSmellPackage(String language, String code, String layer) {
+    private void findDependencyDirectionSmellPackage(String language, String code, String layer) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "package", layer));
     }
 
-    @ShellMethod(
-            "Find occurrences of the dependency direction smells on component level. Layers must be ordered from bottom to top and separated by ','")
-    public void findDependencyDirectionSmellComponent(String language, String code, String layer) {
+    private void findDependencyDirectionSmellComponent(String language, String code, String layer) {
         logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "component", layer));
     }

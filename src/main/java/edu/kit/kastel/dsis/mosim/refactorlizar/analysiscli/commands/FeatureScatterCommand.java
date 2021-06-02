@@ -22,20 +22,38 @@ public class FeatureScatterCommand {
             "Starting Feature Scattering Analysis";
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    @ShellMethod("Find occurrences of the feature scattering smell on type level")
-    public void findFeatureScatteringSmellType(String language, String code) {
+    @ShellMethod(
+            "Find occurrences of the feature scattering smell. Available analysis levels are type, component and package")
+    public void findFeatureScatteringSmell(String language, String code, String level) {
+        switch (level) {
+            case "type":
+                findFeatureScatteringSmellType(language, code);
+                break;
+            case "package":
+                findFeatureScatteringSmellPackage(language, code);
+                break;
+            case "component":
+                findFeatureScatteringSmellComponent(language, code);
+                break;
+            default:
+                logger.atError()
+                        .log(
+                                "Level {} not found. Available analysis levels are type,component and package",
+                                level);
+        }
+    }
+
+    private void findFeatureScatteringSmellType(String language, String code) {
         logger.info(STARTING_FEATURE_SCATTERING_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "type"));
     }
 
-    @ShellMethod("Find occurrences of the feature scattering smell on package level")
-    public void findFeatureScatteringSmellPackage(String language, String code) {
+    private void findFeatureScatteringSmellPackage(String language, String code) {
         logger.info(STARTING_FEATURE_SCATTERING_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "package"));
     }
 
-    @ShellMethod("Find occurrences of the feature scattering smell on component level")
-    public void findFeatureScatteringSmellComponent(String language, String code) {
+    private void findFeatureScatteringSmellComponent(String language, String code) {
         logger.info(STARTING_FEATURE_SCATTERING_ANALYSIS);
         logger.info("{}", () -> createReport(language, code, "component"));
     }

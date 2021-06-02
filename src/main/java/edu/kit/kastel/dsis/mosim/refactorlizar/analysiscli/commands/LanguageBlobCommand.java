@@ -28,8 +28,32 @@ public class LanguageBlobCommand {
     private static final String TYPE_HEADER = "Simulator Type:";
     private static final String COMPONENT_HEADER = "Simulator Component:";
 
-    @ShellMethod("Find occurrences of the language blobs smell on type level")
-    public void findLanguageBlobSmellType(
+    @ShellMethod(
+            "Find occurrences of the language blobs smell. Available analysis levels are type, component and package")
+    public void findLanguageBlobSmell(
+            String language,
+            String code,
+            String level,
+            @ShellOption(defaultValue = "none") String simulatorType) {
+        switch (level) {
+            case "type":
+                findLanguageBlobSmellType(language, code, simulatorType);
+                break;
+            case "package":
+                findLanguageBlobSmellPackage(language, code, simulatorType);
+                break;
+            case "component":
+                findLanguageBlobSmellComponent(language, code, simulatorType);
+                break;
+            default:
+                logger.atError()
+                        .log(
+                                "Level {} not found. Available analysis levels are type,component and package",
+                                level);
+        }
+    }
+
+    private void findLanguageBlobSmellType(
             String language,
             String code,
             @ShellOption(defaultValue = "none") String simulatorType) {
@@ -42,8 +66,7 @@ public class LanguageBlobCommand {
         }
     }
 
-    @ShellMethod("Find occurrences of the language blobs smell on package level")
-    public void findLanguageBlobSmellPackage(
+    private void findLanguageBlobSmellPackage(
             String language,
             String code,
             @ShellOption(defaultValue = "none") String simulatorPackage) {
@@ -56,8 +79,7 @@ public class LanguageBlobCommand {
         }
     }
 
-    @ShellMethod("Find occurrences of the language blobs smell on component level")
-    public void findLanguageBlobSmellComponent(
+    private void findLanguageBlobSmellComponent(
             String language,
             String code,
             @ShellOption(defaultValue = "none") String simulatorComponent) {
