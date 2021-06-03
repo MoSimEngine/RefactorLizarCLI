@@ -24,7 +24,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'com.diffplug.spotless:spotless-maven-plugin:2.11.1'
-	implementation 'com.github.MoSimEngine:RefactorLizar:3dd329f405'
+	implementation 'com.github.MoSimEngine:RefactorLizar:1a1b08a5a4'
 	implementation 'org.springframework.shell:spring-shell-standard:2.0.1.RELEASE'
 	implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
 	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
