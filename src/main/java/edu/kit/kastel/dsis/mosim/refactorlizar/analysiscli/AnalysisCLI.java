@@ -34,6 +34,6 @@ public class AnalysisCLI implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("HALLO");
+        System.out.println("use --help to show all commands");
     }
 }
