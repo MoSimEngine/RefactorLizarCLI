@@ -4,7 +4,7 @@
 
 plugins {
 	id "com.diffplug.spotless" version "5.12.5"
-	id 'org.springframework.boot' version '2.4.5'
+	id 'org.springframework.boot' version '2.5.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'net.ltgt.errorprone' version "2.0.1"
 	id 'java'
@@ -24,7 +24,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'com.diffplug.spotless:spotless-maven-plugin:2.11.1'
-	implementation 'com.github.MoSimEngine:RefactorLizar:c1825ed60c'
+	implementation 'com.github.MoSimEngine:RefactorLizar:3dd329f405'
 	implementation 'org.springframework.shell:spring-shell-standard:2.0.1.RELEASE'
 	implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
 	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
@@ -35,7 +35,7 @@ dependencies {
 }
 
 group = 'edu.kit.kastel.dsis.mosim.refactorlizar'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 description = 'analysiscli'
 sourceCompatibility = '1.11'
 
