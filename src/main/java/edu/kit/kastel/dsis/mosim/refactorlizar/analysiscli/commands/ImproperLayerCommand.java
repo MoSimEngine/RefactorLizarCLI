@@ -1,5 +1,6 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
+import com.google.common.flogger.FluentLogger;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.Report;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.dependencylayer.DependencyLayerAnalyzer;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.commons.Settings;
@@ -7,23 +8,39 @@ import edu.kit.kastel.sdq.case4lang.refactorlizar.core.LanguageParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.SimulatorParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.ModularLanguage;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.SimulatorModel;
-import java.lang.invoke.MethodHandles;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
-@ShellComponent
-@ShellCommandGroup("bad-smell-analysis")
-public class ImproperLayerCommand {
+@Command(
+        name = "findDependencyLayerSmell",
+        description =
+                "Find occurrences of the improper simulator layering smell. Available analysis levels are type, component and package",
+        mixinStandardHelpOptions = true)
+public class ImproperLayerCommand implements Runnable {
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
     private static final String STARTING_DEPENDENCY_CYCLE_ANALYSIS =
             "Starting improper layering Analysis";
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    @ShellMethod(
-            "Find occurrences of the improper simulator layering smell. Available analysis levels are type, component and package")
-    public void findDependencyLayerSmell(String language, String code, String level) {
+    @Option(
+            names = {"-l", "--level"},
+            description = "Level to apply analysis",
+            defaultValue = "component")
+    String level = "component";
+
+    @Option(
+            names = {"-m", "--language-model"},
+            required = true,
+            description = "Path to the language")
+    String language;
+
+    @Option(
+            names = {"-s", "--simulator-code"},
+            required = true,
+            description = "Path to the simulator code")
+    String code;
+
+    @Override
+    public void run() {
         switch (level) {
             case "type":
                 findDependencyLayerSmellType(language, code);
@@ -35,26 +52,27 @@ public class ImproperLayerCommand {
                 findDependencyLayerSmellComponent(language, code);
                 break;
             default:
-                logger.atError()
-                        .log(
-                                "Level {} not found. Available analysis levels are type,component and package",
-                                level);
+                LOGGER.atWarning().log(
+                        "Level %s not found. Available analysis levels are type,component and package",
+                        level);
         }
     }
 
+    public void findDependencyLayerSmell(String language, String code, String level) {}
+
     private void findDependencyLayerSmellType(String language, String code) {
-        logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
-        logger.info("{}", () -> createReport(language, code, "type"));
+        LOGGER.atInfo().log(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
+        LOGGER.atInfo().log("%s", createReport(language, code, "type"));
     }
 
     private void findDependencyLayerSmellPackage(String language, String code) {
-        logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
-        logger.info("{}", () -> createReport(language, code, "package"));
+        LOGGER.atInfo().log(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
+        LOGGER.atInfo().log("%s", createReport(language, code, "package"));
     }
 
     private void findDependencyLayerSmellComponent(String language, String code) {
-        logger.info(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
-        logger.info("{}", () -> createReport(language, code, "component"));
+        LOGGER.atInfo().log(STARTING_DEPENDENCY_CYCLE_ANALYSIS);
+        LOGGER.atInfo().log("%s", createReport(language, code, "component"));
     }
 
     private Report createReport(String language, String code, String level) {
@@ -62,7 +80,7 @@ public class ImproperLayerCommand {
         ModularLanguage lang = LanguageParser.parseLanguage(language);
 
         DependencyLayerAnalyzer dla = new DependencyLayerAnalyzer();
-        logger.info(dla.getDescription());
+        LOGGER.atInfo().log(dla.getDescription());
         Settings settings = dla.getSettings();
         settings.setValue("level", level);
         return dla.analyze(lang, model, settings);

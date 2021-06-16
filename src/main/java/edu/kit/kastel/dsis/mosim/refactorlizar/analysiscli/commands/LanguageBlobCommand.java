@@ -1,5 +1,6 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
+import com.google.common.flogger.FluentLogger;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.Report;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.SearchLevels;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.languageblob.LanguageBlobAnalyzer;
@@ -8,33 +9,50 @@ import edu.kit.kastel.sdq.case4lang.refactorlizar.core.LanguageParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.SimulatorParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.ModularLanguage;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.SimulatorModel;
-import java.lang.invoke.MethodHandles;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
 import org.springframework.util.StringUtils;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
-@ShellComponent
-@ShellCommandGroup("bad-smell-analysis")
-public class LanguageBlobCommand {
+@Command(
+        name = "findLanguageBlobSmell",
+        description =
+                "Find occurrences of the language blobs smell. Available analysis levels are type, component and package",
+        mixinStandardHelpOptions = true)
+public class LanguageBlobCommand implements Runnable {
+    public static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
 
     private static final String STARTING_LANGUAGE_BLOB_ANALYSIS =
             "Starting language blobs Analysis";
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     private static final String PACKAGE_HEADER = "Simulator Package:";
     private static final String TYPE_HEADER = "Simulator Type:";
     private static final String COMPONENT_HEADER = "Simulator Component:";
 
-    @ShellMethod(
-            "Find occurrences of the language blobs smell. Available analysis levels are type, component and package")
-    public void findLanguageBlobSmell(
-            String language,
-            String code,
-            String level,
-            @ShellOption(defaultValue = "none") String simulatorType) {
+    @Option(
+            names = {"-l", "--level"},
+            description = "Level to apply analysis",
+            defaultValue = "component")
+    String level = "component";
+
+    @Option(
+            names = {"-m", "--language-model"},
+            required = true,
+            description = "Path to the language")
+    String language;
+
+    @Option(
+            names = {"-s", "--simulator-code"},
+            required = true,
+            description = "Path to the simulator code")
+    String code;
+
+    @Option(
+            names = {"-t", "--simulator-type"},
+            description = "Simulator type filter",
+            defaultValue = "none")
+    String simulatorType = "none";
+
+    @Override
+    public void run() {
         switch (level) {
             case "type":
                 findLanguageBlobSmellType(language, code, simulatorType);
@@ -46,50 +64,42 @@ public class LanguageBlobCommand {
                 findLanguageBlobSmellComponent(language, code, simulatorType);
                 break;
             default:
-                logger.atError()
-                        .log(
-                                "Level {} not found. Available analysis levels are type,component and package",
-                                level);
+                LOGGER.atWarning().log(
+                        "Level %s not found. Available analysis levels are type,component and package",
+                        level);
         }
     }
 
-    private void findLanguageBlobSmellType(
-            String language,
-            String code,
-            @ShellOption(defaultValue = "none") String simulatorType) {
-        logger.info(STARTING_LANGUAGE_BLOB_ANALYSIS);
+    private void findLanguageBlobSmellType(String language, String code, String simulatorType) {
+        LOGGER.atInfo().log(STARTING_LANGUAGE_BLOB_ANALYSIS);
         Report report = createReport(language, code, "type");
         if (simulatorType.equals("none")) {
-            logger.info(report.getDescription());
+            LOGGER.atInfo().log(report.getDescription());
         } else {
-            logger.info("{}", () -> filterReport(report, simulatorType, SearchLevels.TYPE));
+            LOGGER.atInfo().log("%s", filterReport(report, simulatorType, SearchLevels.TYPE));
         }
     }
 
     private void findLanguageBlobSmellPackage(
-            String language,
-            String code,
-            @ShellOption(defaultValue = "none") String simulatorPackage) {
-        logger.info(STARTING_LANGUAGE_BLOB_ANALYSIS);
+            String language, String code, String simulatorPackage) {
+        LOGGER.atInfo().log(STARTING_LANGUAGE_BLOB_ANALYSIS);
         Report report = createReport(language, code, "package");
         if (simulatorPackage.equals("none")) {
-            logger.info(report.getDescription());
+            LOGGER.atInfo().log(report.getDescription());
         } else {
-            logger.info("{}", () -> filterReport(report, simulatorPackage, SearchLevels.PACKAGE));
+            LOGGER.atInfo().log("%s", filterReport(report, simulatorPackage, SearchLevels.PACKAGE));
         }
     }
 
     private void findLanguageBlobSmellComponent(
-            String language,
-            String code,
-            @ShellOption(defaultValue = "none") String simulatorComponent) {
-        logger.info(STARTING_LANGUAGE_BLOB_ANALYSIS);
+            String language, String code, String simulatorComponent) {
+        LOGGER.atInfo().log(STARTING_LANGUAGE_BLOB_ANALYSIS);
         Report report = createReport(language, code, "component");
         if (simulatorComponent.equals("none")) {
-            logger.info(report.getDescription());
+            LOGGER.atInfo().log(report.getDescription());
         } else {
-            logger.info(
-                    "{}", () -> filterReport(report, simulatorComponent, SearchLevels.COMPONENT));
+            LOGGER.atInfo().log(
+                    "%s", filterReport(report, simulatorComponent, SearchLevels.COMPONENT));
         }
     }
 
@@ -98,7 +108,7 @@ public class LanguageBlobCommand {
         ModularLanguage lang = LanguageParser.parseLanguage(language);
 
         LanguageBlobAnalyzer lba = new LanguageBlobAnalyzer();
-        logger.info(lba.getDescription());
+        LOGGER.atInfo().log(lba.getDescription());
         Settings settings = lba.getSettings();
         settings.setValue("level", level);
         return lba.analyze(lang, model, settings);
