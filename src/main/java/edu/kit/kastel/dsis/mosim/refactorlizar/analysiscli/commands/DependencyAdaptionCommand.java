@@ -13,12 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-@ShellComponent
-@ShellCommandGroup("Language to program dependencies")
 public class DependencyAdaptionCommand {
     private static final Logger logger = LogManager.getLogger(DependencyAdaptionCommand.class);
     private final String DELIMITER = ";";
