@@ -50,6 +50,5 @@ public class ArchitectureEvaluationCommand implements Runnable {
         LOGGER.atInfo().log("Coupling: %s", result.getCoupling().getValue());
         LOGGER.atInfo().log("Cohesion: %s", result.getCohesion().getValue());
         LOGGER.atInfo().log("Complexity: %s", result.getComplexity().getValue());
-
     }
 }
