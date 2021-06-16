@@ -34,6 +34,7 @@ public class ArchitectureEvaluationCommand implements Runnable {
 
     @Override
     public void run() {
+
         // das array ist dort weil im moment ich meine eigene api kaputt entworfen habe, das kommt
         // noch weg
         Result result =
@@ -49,5 +50,6 @@ public class ArchitectureEvaluationCommand implements Runnable {
         LOGGER.atInfo().log("Coupling: %s", result.getCoupling().getValue());
         LOGGER.atInfo().log("Cohesion: %s", result.getCohesion().getValue());
         LOGGER.atInfo().log("Complexity: %s", result.getComplexity().getValue());
+
     }
 }
