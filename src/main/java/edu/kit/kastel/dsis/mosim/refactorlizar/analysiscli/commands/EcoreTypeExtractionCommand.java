@@ -1,6 +1,5 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
-
 import com.google.common.flogger.FluentLogger;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -55,7 +54,9 @@ public class EcoreTypeExtractionCommand implements Runnable {
     }
 
     private void printMetamodelTypes(Map<String, List<String>> metamodels) {
-        StringJoiner joiner = new StringJoiner(System.lineSeparator(), System.lineSeparator(), System.lineSeparator());
+        StringJoiner joiner =
+                new StringJoiner(
+                        System.lineSeparator(), System.lineSeparator(), System.lineSeparator());
         for (var entry : metamodels.entrySet()) {
             joiner.add("Metamodel:").add(entry.getKey()).add("Types:");
             entry.getValue().forEach(joiner::add);

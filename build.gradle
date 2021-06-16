@@ -8,7 +8,7 @@ plugins {
 	id 'java'
 	id 'application'
 	id 'com.github.johnrengelman.shadow' version '7.0.0'
-  id "org.mikeneck.graalvm-native-image" version "1.4.1"
+	id "org.mikeneck.graalvm-native-image" version "1.4.1"
 }
 
 repositories {
@@ -62,42 +62,42 @@ import org.mikeneck.graalvm.BuildTypeSelector
 
 
 configurations {
-  // to remove too long jar path, prepare empty configuration
-  emptyConfiguration
+	// to remove too long jar path, prepare empty configuration
+	emptyConfiguration
 }
 
 // copies jar files for manifest can refer to dependencies
 task copyDependencies(type: Copy, group: 'build') {
-  from configurations.runtimeClasspath
-  destinationDir = file("$buildDir/libs")
+	from configurations.runtimeClasspath
+	destinationDir = file("$buildDir/libs")
 }
 
 jar {
-  dependsOn 'copyDependencies'
-  manifest {
-    // entry jar files via Class-Path attribute
-    def classpathString = configurations.runtimeClasspath.collect { File f -> f.name }.join(' ')
-    attributes 'Class-Path': classpathString
-  }
+	dependsOn 'copyDependencies'
+	manifest {
+		// entry jar files via Class-Path attribute
+		def classpathString = configurations.runtimeClasspath.collect { File f -> f.name }.join(' ')
+		attributes 'Class-Path': classpathString
+	}
 }
 
 nativeImage {
-  // remove jar's paths from command
-  runtimeClasspath = configurations.emptyConfiguration
+	// remove jar's paths from command
+	runtimeClasspath = configurations.emptyConfiguration
 	graalVmHome = System.getProperty('java.home')
-  buildType { BuildTypeSelector build ->
-      build.executable {
-         main = 'edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.AnalysisCLI'
-      }
-   }
-   executableName = 'analysiscli'
-   outputDirectory = file("$buildDir/bin")
-   arguments {
-      add '--no-fallback'
-      add '--enable-all-security-services'
-			add '--initialize-at-build-time'
-    	add '--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy'
-			add '--report-unsupported-elements-at-runtime'
-			add '--allow-incomplete-classpath'
-   }
+	buildType { BuildTypeSelector build ->
+		build.executable {
+			main = 'edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.AnalysisCLI'
+		}
+	}
+	executableName = 'analysiscli'
+	outputDirectory = file("$buildDir/bin")
+	arguments {
+		add '--no-fallback'
+		add '--enable-all-security-services'
+		add '--initialize-at-build-time'
+		add '--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy'
+		add '--report-unsupported-elements-at-runtime'
+		add '--allow-incomplete-classpath'
+	}
 }
