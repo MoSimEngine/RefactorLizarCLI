@@ -1,5 +1,6 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli;
 
+import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.ArchitectureEvaluationCommand;
 import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.DependencyAdaptionCommand;
 import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.DependencyCycleCommand;
 import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.DependencyDirectionCommand;
@@ -13,6 +14,7 @@ import picocli.CommandLine.Command;
 @Command(
         name = "analysiscli",
         subcommands = {
+            ArchitectureEvaluationCommand.class,
             DependencyAdaptionCommand.class,
             DependencyCycleCommand.class,
             DependencyDirectionCommand.class,

@@ -10,7 +10,8 @@ import picocli.CommandLine.Option;
 @Command(
         name = "evaluateCode",
         description =
-                "Evaluates for the given source path hypergraph code metrics. dataTypePatternsPath and observedSystemPath is a path to file for ignored/included types. Every line in this file is seen as a regex tested against the qualified type names. DataTypePatterns are ignored types and observedSystem are included types")
+                "Evaluates for the given source path hypergraph code metrics. dataTypePatternsPath and observedSystemPath is a path to file for ignored/included types. Every line in this file is seen as a regex tested against the qualified type names. DataTypePatterns are ignored types and observedSystem are included types",
+        mixinStandardHelpOptions = true)
 public class ArchitectureEvaluationCommand implements Runnable {
     private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
 
