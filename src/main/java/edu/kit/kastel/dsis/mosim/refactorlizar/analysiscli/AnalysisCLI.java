@@ -8,6 +8,7 @@ import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.EcoreTypeExt
 import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.FeatureScatterCommand;
 import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.ImproperLayerCommand;
 import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.LanguageBlobCommand;
+import edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands.LanguageStructureApplianceCommand;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
@@ -21,7 +22,8 @@ import picocli.CommandLine.Command;
             EcoreTypeExtractionCommand.class,
             FeatureScatterCommand.class,
             ImproperLayerCommand.class,
-            LanguageBlobCommand.class
+            LanguageBlobCommand.class,
+            LanguageStructureApplianceCommand.class
         },
         mixinStandardHelpOptions = true,
         version = "0.0.1",
