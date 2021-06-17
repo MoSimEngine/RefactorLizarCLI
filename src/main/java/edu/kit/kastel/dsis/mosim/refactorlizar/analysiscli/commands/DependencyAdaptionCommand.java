@@ -1,6 +1,7 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
 import com.google.common.base.Splitter;
+import com.google.common.flogger.FluentLogger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,20 +12,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
-@ShellComponent
-@ShellCommandGroup("Language to program dependencies")
-public class DependencyAdaptionCommand {
-    private static final Logger logger = LogManager.getLogger(DependencyAdaptionCommand.class);
+@Command(
+        name = "adaptDependencies",
+        description = "Change imports of simulator code according to the new, modular metamodel.",
+        mixinStandardHelpOptions = true)
+public class DependencyAdaptionCommand implements Runnable {
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+
     private final String DELIMITER = ";";
 
-    @ShellMethod("Adapt dependencies from modular language to monolithic program")
-    public void adaptDependencies(String program, String csv) {
+    @Option(
+            names = {"-c", "--csv-path"},
+            required = true,
+            description = "Path to the *.csv mapping file")
+    String csv;
+
+    @Option(
+            names = {"-s", "--simulator-code"},
+            required = true,
+            description = "Path to the simulator code")
+    String program;
+
+    @Override
+    public void run() {
         Map<String, String> dependencyMapping = new HashMap<>();
         // Load CSV
         Path csvPath = Paths.get(csv);
@@ -38,7 +51,7 @@ public class DependencyAdaptionCommand {
                                     "import " + split.get(0) + ";", "import " + split.get(1) + ";");
                     });
         } catch (IOException e) {
-            logger.error(e);
+            LOGGER.atWarning().withCause(e).log();
         }
 
         // Change Dependencies according to CSV
@@ -59,7 +72,7 @@ public class DependencyAdaptionCommand {
                 }
             }
         } catch (IOException e) {
-            logger.error(e);
+            LOGGER.atWarning().withCause(e).log();
         }
     }
 }

@@ -1,9 +1,7 @@
 package edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.commands;
 
-import static org.apache.logging.log4j.util.Strings.LINE_SEPARATOR;
-
+import com.google.common.flogger.FluentLogger;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,44 +16,52 @@ import java.util.stream.Stream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
-@ShellComponent
-@ShellCommandGroup("Language Knowledge Extraction")
-public class EcoreTypeExtractionCommand {
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+@Command(
+        name = "showTypesInMetamodels",
+        description = "Metamodels Type Extraction",
+        mixinStandardHelpOptions = true)
+public class EcoreTypeExtractionCommand implements Runnable {
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+
     private final String ECORE_FILE_ENDING = "ecore";
     private final PathMatcher matcher =
             FileSystems.getDefault().getPathMatcher("glob:**." + ECORE_FILE_ENDING);
     private final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-    @ShellMethod("Metamodels Type Extraction")
-    public void showTypesInMetamodels(String rootPath) {
+    @Option(
+            names = {"-l", "--language-root"},
+            required = true,
+            description = "Path to the root of a language/metamodel (*.ecore)")
+    String rootPath;
+
+    @Override
+    public void run() {
         try (Stream<Path> paths = Files.walk(Paths.get(rootPath))) {
             paths.filter(matcher::matches)
                     .map(this::readMetamodels)
                     .forEach(this::printMetamodelTypes);
         } catch (IOException e) {
-            logger.error(e);
+            LOGGER.atWarning().withCause(e).log();
         }
     }
 
     private void printMetamodelTypes(Map<String, List<String>> metamodels) {
-        StringJoiner joiner = new StringJoiner(LINE_SEPARATOR, LINE_SEPARATOR, LINE_SEPARATOR);
+        StringJoiner joiner =
+                new StringJoiner(
+                        System.lineSeparator(), System.lineSeparator(), System.lineSeparator());
         for (var entry : metamodels.entrySet()) {
             joiner.add("Metamodel:").add(entry.getKey()).add("Types:");
             entry.getValue().forEach(joiner::add);
         }
-        logger.info(joiner);
+        LOGGER.atInfo().log("%s", joiner);
     }
 
     private Map<String, List<String>> readMetamodels(Path path) {
@@ -74,7 +80,7 @@ public class EcoreTypeExtractionCommand {
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            logger.error(e);
+            LOGGER.atWarning().withCause(e).log();
         }
         return metamodels;
     }

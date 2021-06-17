@@ -4,10 +4,10 @@
 
 plugins {
 	id "com.diffplug.spotless" version "5.14.0"
-	id 'org.springframework.boot' version '2.5.1'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'net.ltgt.errorprone' version "2.0.1"
-	id 'java'
+	id 'application'
+	id 'com.github.johnrengelman.shadow' version '7.0.0'
+	id "org.mikeneck.graalvm-native-image" version "1.4.1"
 }
 
 repositories {
@@ -22,14 +22,14 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'com.diffplug.spotless:spotless-maven-plugin:2.11.1'
 	implementation 'com.github.MoSimEngine:RefactorLizar:1a1b08a5a4'
-	implementation 'org.springframework.shell:spring-shell-standard:2.0.1.RELEASE'
-	implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
-	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+	implementation 'fr.inria.gforge.spoon:spoon-core:9.0.0'
+	implementation 'info.picocli:picocli:4.6.1'
+	implementation group: 'com.google.flogger', name: 'flogger', version: '0.6'
+	implementation group: 'com.google.flogger', name: 'flogger-system-backend', version: '0.6'
+	annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
 	errorprone("com.google.errorprone:error_prone_core:2.7.1")
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 group = 'edu.kit.kastel.dsis.mosim.refactorlizar'
@@ -37,6 +37,7 @@ version = '0.0.2-SNAPSHOT'
 description = 'analysiscli'
 sourceCompatibility = '1.11'
 
+mainClassName = "edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.AnalysisCLI"
 spotless {
 	java {
 		target "**/*.java"
@@ -52,13 +53,51 @@ spotless {
 	}
 }
 
+compileJava {
+	options.compilerArgs += [
+		"-Aproject=${project.group}/${project.name}"
+	]
+}
+import org.mikeneck.graalvm.BuildTypeSelector
+
+
+configurations {
+	// to remove too long jar path, prepare empty configuration
+	emptyConfiguration
+}
+
+// copies jar files for manifest can refer to dependencies
+task copyDependencies(type: Copy, group: 'build') {
+	from configurations.runtimeClasspath
+	destinationDir = file("$buildDir/libs")
+}
+
 jar {
+	dependsOn 'copyDependencies'
 	manifest {
-		attributes(
-				'Main-Class': 'edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.AnalysiscliApplication'
-				)
+		// entry jar files via Class-Path attribute
+		def classpathString = configurations.runtimeClasspath.collect { File f -> f.name }.join(' ')
+		attributes 'Class-Path': classpathString
 	}
 }
-tasks.withType(JavaCompile).configureEach {
-	options.fork = true
+
+nativeImage {
+	// remove jar's paths from command
+	runtimeClasspath = configurations.emptyConfiguration
+	graalVmHome = System.getProperty('java.home')
+	buildType { BuildTypeSelector build ->
+		build.executable {
+			main = 'edu.kit.kastel.dsis.mosim.refactorlizar.analysiscli.AnalysisCLI'
+		}
+	}
+	executableName = 'analysiscli'
+	outputDirectory = file("$buildDir/bin")
+	arguments {
+		add '--no-fallback'
+		add '--enable-all-security-services'
+		add '--initialize-at-build-time'
+		add '--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy'
+		add '--report-unsupported-elements-at-runtime'
+		add '--allow-incomplete-classpath'
+	}
 }
