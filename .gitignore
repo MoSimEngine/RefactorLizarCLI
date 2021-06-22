@@ -90,3 +90,7 @@ gradle-app.setting
 hs_err_pid*
 # Binary
 /bin
+
+.java-version
+*.bak
+
