@@ -37,7 +37,7 @@ public class EcoreTypeExtractionCommand implements Runnable {
     private final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
     @Option(
-            names = {"-l", "--language-root"},
+            names = {"-m", "--modular-language"},
             required = true,
             description = "Path to the root of a language/metamodel (*.ecore)")
     String rootPath;
