@@ -23,7 +23,8 @@ repositories {
 
 dependencies {
 	implementation 'com.diffplug.spotless:spotless-maven-plugin:2.11.1'
-	implementation 'com.github.MoSimEngine:RefactorLizar:1a1b08a5a4'
+	implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
+	implementation 'com.github.MoSimEngine:RefactorLizar:4717150d90'
 	implementation 'fr.inria.gforge.spoon:spoon-core:9.0.0'
 	implementation 'info.picocli:picocli:4.6.1'
 	implementation group: 'com.google.flogger', name: 'flogger', version: '0.6'
