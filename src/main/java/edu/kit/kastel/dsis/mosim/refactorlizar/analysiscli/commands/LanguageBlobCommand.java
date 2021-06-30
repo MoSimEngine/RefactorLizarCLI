@@ -52,17 +52,14 @@ public class LanguageBlobCommand implements Runnable {
             defaultValue = "none")
     String simulatorType = "none";
 
-    @Option(
-            names= {"--input-type-eclipse"}
-    )
+    @Option(names = {"--input-type-eclipse"})
     boolean eclipse_input_kind;
 
     private InputKind inputKind = InputKind.FEATURE_FILE;
 
     @Override
     public void run() {
-        if(eclipse_input_kind)
-            inputKind = InputKind.ECLIPSE_PLUGIN;
+        if (eclipse_input_kind) inputKind = InputKind.ECLIPSE_PLUGIN;
         switch (level) {
             case "type":
                 findLanguageBlobSmellType(language, code, simulatorType);
