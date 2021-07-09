@@ -5,6 +5,7 @@ import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.Report;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.SearchLevels;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.languageblob.LanguageBlobAnalyzer;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.commons.Settings;
+import edu.kit.kastel.sdq.case4lang.refactorlizar.core.InputKind;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.LanguageParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.SimulatorParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.ModularLanguage;
@@ -51,8 +52,14 @@ public class LanguageBlobCommand implements Runnable {
             defaultValue = "none")
     String simulatorType = "none";
 
+    @Option(names = {"--input-type-eclipse"})
+    boolean eclipse_input_kind;
+
+    private InputKind inputKind = InputKind.FEATURE_FILE;
+
     @Override
     public void run() {
+        if (eclipse_input_kind) inputKind = InputKind.ECLIPSE_PLUGIN;
         switch (level) {
             case "type":
                 findLanguageBlobSmellType(language, code, simulatorType);
@@ -104,8 +111,8 @@ public class LanguageBlobCommand implements Runnable {
     }
 
     private Report createReport(String language, String code, String level) {
-        SimulatorModel model = SimulatorParser.parseSimulator(code);
-        ModularLanguage lang = LanguageParser.parseLanguage(language);
+        SimulatorModel model = SimulatorParser.parseSimulator(code, inputKind);
+        ModularLanguage lang = LanguageParser.parseLanguage(language, inputKind);
 
         LanguageBlobAnalyzer lba = new LanguageBlobAnalyzer();
         LOGGER.atInfo().log(lba.getDescription());

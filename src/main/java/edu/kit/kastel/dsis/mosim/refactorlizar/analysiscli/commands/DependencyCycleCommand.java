@@ -4,6 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.api.Report;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.analyzer.dependencycycle.DependencyCycleAnalyzer;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.commons.Settings;
+import edu.kit.kastel.sdq.case4lang.refactorlizar.core.InputKind;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.LanguageParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.core.SimulatorParser;
 import edu.kit.kastel.sdq.case4lang.refactorlizar.model.ModularLanguage;
@@ -39,8 +40,14 @@ public class DependencyCycleCommand implements Runnable {
             description = "Path to the simulator code")
     String code;
 
+    @Option(names = {"--input-type-eclipse"})
+    boolean eclipse_input_kind;
+
+    private InputKind inputKind = InputKind.FEATURE_FILE;
+
     @Override
     public void run() {
+        if (eclipse_input_kind) inputKind = InputKind.ECLIPSE_PLUGIN;
         switch (level) {
             case "type":
                 findDependencyCycleSmellType(language, code);
@@ -74,8 +81,8 @@ public class DependencyCycleCommand implements Runnable {
     }
 
     private Report createReport(String language, String code, String level) {
-        SimulatorModel model = SimulatorParser.parseSimulator(code);
-        ModularLanguage lang = LanguageParser.parseLanguage(language);
+        SimulatorModel model = SimulatorParser.parseSimulator(code, inputKind);
+        ModularLanguage lang = LanguageParser.parseLanguage(language, inputKind);
 
         DependencyCycleAnalyzer dca = new DependencyCycleAnalyzer();
         LOGGER.atInfo().log("%s", dca.getDescription());
