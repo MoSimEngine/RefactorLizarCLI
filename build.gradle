@@ -24,7 +24,7 @@ repositories {
 dependencies {
 	implementation 'com.diffplug.spotless:spotless-maven-plugin:2.11.1'
 	implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
-  implementation 'com.github.mosimengine:refactorlizar:master-SNAPSHOT'
+	implementation 'com.github.mosimengine:refactorlizar:master-SNAPSHOT'
 	implementation 'fr.inria.gforge.spoon:spoon-core:9.0.0'
 	implementation 'info.picocli:picocli:4.6.1'
 	implementation group: 'com.google.flogger', name: 'flogger', version: '0.6'
@@ -71,6 +71,7 @@ configurations {
 task copyDependencies(type: Copy, group: 'build') {
 	from configurations.runtimeClasspath
 	destinationDir = file("$buildDir/libs")
+	duplicatesStrategy = 'include'
 }
 
 jar {
@@ -101,4 +102,12 @@ nativeImage {
 		add '--report-unsupported-elements-at-runtime'
 		add '--allow-incomplete-classpath'
 	}
+}
+
+rootProject.tasks.named("distTar") {
+	duplicatesStrategy = 'include'
+}
+
+rootProject.tasks.named("distZip") {
+	duplicatesStrategy = 'include'
 }
