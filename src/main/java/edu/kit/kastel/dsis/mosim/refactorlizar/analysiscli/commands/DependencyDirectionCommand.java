@@ -29,7 +29,7 @@ public class DependencyDirectionCommand implements Runnable {
     String level = "component";
 
     @Option(
-            names = {"-m", "--language-model"},
+            names = {"-m", "--modular-language"},
             required = true,
             description = "Path to the language")
     String language;
@@ -45,6 +45,13 @@ public class DependencyDirectionCommand implements Runnable {
             required = true,
             description = "Layer information")
     String layer;
+
+    @Option(
+            names = {"-p", "--path-structure"},
+            description =
+                    "Is optional. If the language is part of the code use \"LinC\", if the code is part of the language use \"CinL\", if none of these apply, don't use the flag.",
+            defaultValue = "none")
+    String language_location;
 
     @Override
     public void run() {
