@@ -101,13 +101,15 @@ nativeImage {
 		add '--initialize-at-run-time=org.codehaus.groovy.control.XStreamUtils,groovy.grape.GrapeIvy'
 		add '--report-unsupported-elements-at-runtime'
 		add '--allow-incomplete-classpath'
+		add '-H:IncludeResources=org.eclipse.jdt.internal.compiler.*'
 	}
 }
 
-rootProject.tasks.named("distTar") {
-	duplicatesStrategy = 'include'
-}
-
-rootProject.tasks.named("distZip") {
-	duplicatesStrategy = 'include'
+distributions {
+	main {
+		distributionBaseName = 'refactorlizar-analysiscli'
+		contents {
+			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		}
+	}
 }
