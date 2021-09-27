@@ -27,7 +27,7 @@ dependencies {
 	implementation 'com.github.mosimengine:refactorlizar:master-SNAPSHOT'
 	implementation 'fr.inria.gforge.spoon:spoon-core:9.1.0'
 	implementation 'info.picocli:picocli:4.6.1'
-	implementation group: 'com.google.flogger', name: 'flogger', version: '0.6'
+	implementation group: 'com.google.flogger', name: 'flogger', version: '0.7'
 	implementation group: 'com.google.flogger', name: 'flogger-system-backend', version: '0.6'
 	annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
 	errorprone("com.google.errorprone:error_prone_core:2.9.0")
